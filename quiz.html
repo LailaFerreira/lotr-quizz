@@ -369,11 +369,11 @@ quiz = shuffle(quiz);
 
          function calcTips(score){
             if(Math.round(this.score/quiz.length * 100 <= 30)){
-                $('#question').text("Mandou mal, hein! Só desbloqueou uma dica! \n Dica 1: Dica 1: Ambos gostaríamos que fosse maior.");
+                $('#question').text("Mandou mal, hein! Só desbloqueou uma dica! \n Dica 1: Ambos gostaríamos que fosse maior.");
             }else if(Math.round(this.score/quiz.length * 100 <= 50 && this.score/quiz.length * 100 >= 30)){
                 $('#question').text(" Desapontada porém não surpresa. Você desbloqueou duas dicas! Dica 1: Ambos gostaríamos que fosse maior. Dica 2: Espero que você consiga alcançar.");
             }else if (Math.round(this.score/quiz.length * 100 > 50)) {
-                $('#question').text("Ok, você é o nerdão mais nerdão de LOTR! Desapontada porém não surpresa. Você desbloqueou duas dicas! Dica 1: Ambos gostaríamos que fosse maior. Dica 2: Espero que você consiga alcançar. Dica 3: Perto de um objeto que você gostaria de poder utilizar mais na sua nova casa.");            
+                $('#question').text("Ok, você é o nerdão mais nerdão de LOTR! Você desbloqueou as incríveis 3 dicas! Dica 1: Ambos gostaríamos que fosse maior. Dica 2: Espero que você consiga alcançar. Dica 3: Perto de um objeto que você gostaria de poder utilizar mais na sua nova casa.");            
             }
 
         }
