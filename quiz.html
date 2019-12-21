@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" href="img/core-img/favicon.ico">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="initial-scale=1.0">
+    <title>LOTR - Quest</title>
+    <!-- jquery for maximum compatibility -->
+	<link type="text/css" rel="stylesheet" href="https://stackpath.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css">
+    <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>-->
+	<script src="https://code.jquery.com/jquery-1.11.1.min.js" integrity="sha256-VAvG3sHdS5LqTT+5A/aeq/bZGa/Uj04xKxY8KM/w9EE=" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script>
+
+    var quiztitle = "Quest natalino";
+
+
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+	    
+if (!("scramble" in Array.prototype)) {
+  Object.defineProperty(Array.prototype, "scramble", {
+    enumerable: false,
+    value: function() {
+      var o, i, ln = this.length;
+      while (ln--) {
+        i = Math.random() * (ln + 1) | 0;
+        o = this[ln];
+        this[ln] = this[i];
+        this[i] = o;
+      }
+      return this;
+    }
+  });
+}		
+	    
+    var quiz = [
+        {
+            "question"      :   "Pergunta: Quem é o protagonista de O senhor dos anéis?",
+            "image"         :   "https://s3-us-west-1.amazonaws.com/tryinteract-uploads/5d9714c29c52e10014bda62f/_ff549ab0-e68e-11e9-aa31-1729d75a14c5.jpg",
+            "choices"       :   [
+                                    "Gandalf",
+                                    "Bilbo Bolseiro",
+                                    "Aragorn",
+                                    "Frodo",
+                                    "Sauron"
+                                ],
+            "correct"       :   "Frodo",
+            "explanation"   :   "Frodo é o protagonista que é incumbido de levar o anel para a Montanha da Perdição.",
+        },
+        {
+            "question"      :   "Pergunta: Qual o nome do mago que trai a ordem dos Istari no filme A sociedade do anel?",
+            "image"         :   "http://www.qggeek.com.br/wp-content/uploads/2016/11/istari-2-banner.jpg",
+            "choices"       :   [
+                                    "Radagast, o Castanho",
+                                    "Gandalf, o Cinzento",
+                                    "Saruman, o Branco",
+                                    "Pallanto, o Azul",
+                                    "Galadriel, a Dama da Luz"
+                                ],
+            "correct"       :   "Saruman, o Branco",
+            "explanation"   :   "Saruman trai a ordem aprisionando Gandalf em Isengard na torre de Orthanc.",
+        },
+        {
+            "question"      :   "Pergunta: No filme A sociedade do anel Gandalf morre lutando com qual inimigo?",
+            "image"         :   "https://abrilveja.files.wordpress.com/2019/09/blogib_lotr-amazon_feat.jpg",
+            "choices"       :   [
+                                    "Balrog",
+                                    "Troll Montanhês",
+                                    "Sauron",
+                                    "Voz de Sauron",
+                                    "Saruman"
+                                ],
+            "correct"       :   "Balrog",
+            "explanation"   :   "Gandalf encontra o Veneno de Durin em Moria e o enfrenta, derrotando-o, mas sendo levado por ele em seguida que o puxou pelo laço quando a ponte desmoronou.",
+        },
+        {
+            "question"      :   "Pergunta: Qual é o nome do senhor dos Nazgul?",
+
+            "image"         :   "https://i0.wp.com/hnentertainment.co/wp-content/uploads/2019/02/AMAZON_SERIES_LOTR_-1.jpg?fit=1400%2C700&ssl=1",
+            "choices"       :   [
+                                    "Feiticeiro Deus de Angmar",
+                                    "Bruxo Rei de Angmar",
+                                    "Espectro de Gundabad",
+                                    "Mago de Gundabad",
+                                    "Rei de Dol Guldur"
+                                ],
+            "correct"       :   "Bruxo Rei de Angmar",
+            "explanation"   :   "Seu nome é Witch King of Angmar (Bruxo Rei de Angmar), que lidera os outros 8 espectros do anel. Reside em Dol Guldur, o Monte da Feitiçaria.",
+        },
+        {
+            "question"      :   "Pergunta: Qual o nome do tio de Frodo que lhe deixa o Bolsão?",
+            "image"         :   "https://www.thewrap.com/wp-content/uploads/2016/02/lord-of-the-rings-trilogy.jpg",
+            "choices"       :   [
+                                    "Bilbo Brandebuque",
+                                    "Bilbo Balseiro",
+                                    "Urratouro Tûk",
+                                    "Bilbo Tûk",
+                                    "Bilbo Bolseiro"
+                                ],
+            "correct"       :   "Bilbo Bolseiro",
+            "explanation"   :   "O nome do tio de Frodo é Bilbo Bolseiro que o adota por admirar o real espírito de Frodo.",
+        },
+          {
+            "question"      :   "Pergunta: Qual o nome da vila para a qual se dirigem Sam, Frodo, Pippin e Merry à mando de Gandalf?",
+            "image"         :   "https://cdn3.whatculture.com/images/2015/09/ty3LZFhe-600x338.jpg",
+            "choices"       :   [
+                                    "Quarta-Oeste",
+                                    "Condado",
+                                    "Bri",
+                                    "Pônei Saltitante",
+                                    "Eriador"
+                                ],
+            "correct"       :   "Bri",
+            "explanation"   :   "Os quatro amigos se dirigem para Bri onde buscam por Gandalf que à princípio estaria esperando por eles na estalagem O Pônei Saltitante.",
+        },
+        {
+            "question"      :   "Pergunta: Qual o nome do senhor do escuro em LOTR?",
+            "image"         :   "http://thenerdybird.com/wp-content/uploads/2017/11/ElvesLordOfTheRingsWhite.jpg",
+            "choices"       :   [
+                                    "Sauron",
+                                    "Saruman",
+                                    "Balrog",
+                                    "Lurtz",
+                                    "Nazgul"
+                                ],
+            "correct"       :   "Sauron",
+            "explanation"   :   "Sauron é o senhor do escuro, cujo qual forjou o 'Um anel'.",
+        },
+          {
+            "question"      :   "Pergunta: Quais os outros possíveis nomes dados à Valfenda?",
+            "image"         :   "http://s2.glbimg.com/7jmexRoq72wso5K3HkZdLwHDbqE=/e.glbimg.com/og/ed/f/original/2015/07/21/rivendell.jpg",
+            "choices"       :   [
+                                    "Imladris e Eriador",
+                                    "Rivendel e Erebor",
+                                    "Erebor e Eriador",
+                                    "Imladris e Emin Muil",
+                                    "Rivendel e Imladris"
+                                ],
+            "correct"       :   "Rivendel e Imladris",
+            "explanation"   :   "Os outros nomes são Imladris, para os elfos e Rivendel para os demais habitantes da Terra Média (Riven = rio, riacho, corredeira e Del = fenda, val, valeta, fosso). Por isso Valfenda"
+        },
+        {
+            "question"      :   "Pergunta: Qual o nome do arqueiro élfico que ajuda Frodo em sua jornada para destruir o anel?",
+            "image"         :   "http://tolkienbrasil.com/wp-content/uploads/2013/09/elves.jpg",
+            "choices"       :   [
+                                    "Glorfindel",
+                                    "Thranduil",
+                                    "Gondolin",
+                                    "Legolas",
+                                    "Galadhrim"
+                                ],
+            "correct"       :   "Legolas",
+            "explanation"   :   "Legolas é filho de Thranduil e ajuda Frodo e os demais membros da sociedade na viagem pela Terra Média",
+        },
+        {
+            "question"      :   "Pergunta: O que acontece com Saruman depois da Marcha dos Ents?",
+            "image"         :   "https://ogimg.infoglobo.com.br/in/16412891-c23-fab/FT1500A/690/senhor-dos-aneia.png",
+            "choices"       :   [
+                                    "Gandalf vai até Isengard e mata Saruman.",
+                                    "Gandalf vai até Isengard e destitui Saruman da Ordem dos Istari e o mantém preso.",
+                                    "Gandalf vai até Isengard e faz Grima matar Saruman.",
+                                    "Saruman atira uma bola de fogo em Gandalf e escapa.",
+                                    "Gandalf destitui Saruman da Ordem dos Istari quebrando seu cajado e depois Saruman é assassinado por seu servo Grima."
+                                ],
+            "correct"       :   "Gandalf vai até Isengard e mata Saruman.",
+            "explanation"   :   "Gandalf oferece piedade à Saruman na torre de Orthanc, quando Saruman atira uma bola de fogo em Gandalf. Gandalf quebra o cajado de Saruman destituindo-o da Ordem dos Istari. Em seguida Grima trai Saruman e o apunhala.",
+        },
+          {
+            "question"      :   "Pergunta: O que acontece com Theoden e Gandalf no palácio de Meduseld?",
+            "image"         :   "https://i.ytimg.com/vi/P_YsEJ2nf9Q/maxresdefault.jpg",
+            "choices"       :   [
+                                    "Gandalf rouba o cavalo Shadowfax de Theoden e foge.",
+                                    "Theoden prende Gandalf por tentar desafiá-lo.",
+                                    "Gandalf tenta exorcizar Theoden e acaba sendo preso por ter seus poderes bloqueados no palácio.",
+                                    "Gandalf exorciza Theoden e Rohan volta ao normal.",
+                                    "Gandalf devolve o cavalo Shadowfax para Theoden que o havia emprestado."
+                                ],
+            "correct"       :   "Gandalf exorciza Theoden e Rohan volta ao normal.",
+            "explanation"   :   "Gandalf consegue exorcizar Saruman de dentro de Theoden restaurando o governo de Rohan à Theoden: - Respire o ar da liberdade, meu amigo - Gandalf.",
+        },
+        {
+            "question"      :   "Pergunta: Quem Aragorn vê morta no Palantír?",
+            "image"         :   "https://i.pinimg.com/originals/01/17/5d/01175da53d875b44107c0409e3894940.jpg",
+            "choices"       :   [
+                                    "Galadriel",
+                                    "Arwen",
+                                    "Éowyn",
+                                    "Luthien",
+                                    "Tauriel"
+                                ],
+            "correct"       :   "Arwen",
+            "explanation"   :   "Aragorn tenta provocar Sauron para a armadilha de atrair seus exércitos para fora. Sauron mostra à ele sua amada Arwen morta no Palantír. No susto Aragorn derruba o presente que Arwen lhe deu no chão, quebrando o colar da Estrela Vespertina.",
+        },
+
+    ];
+
+
+
+
+
+//use this for IE syntax error at => : ECMA script 6 not supported in IE 11 :(
+//quiz.forEach(function(q){ return q.choices.scramble()});
+
+//use this for ECMA script 6
+quiz.forEach(q => q.choices.scramble());
+//console.log(quiz[0].choices); 
+		
+quiz = shuffle(quiz);
+	    
+    /******* No need to edit below this line *********/
+    var currentquestion = 0, score = 0, submt=true, picked;
+
+    jQuery(document).ready(function($){
+
+        /**
+         * HTML Encoding function for alt tags and attributes to prevent messy
+         * data appearing inside tag attributes.
+         */
+        function htmlEncode(value){
+          return $(document.createElement('div')).text(value).html();
+        }
+
+        /**
+         * This will add the individual choices for each question to the ul#choice-block
+         *
+         * @param {choices} array The choices from each question
+         */
+		function addChoices(choices){
+			if(typeof choices !== "undefined" && $.type(choices) == "array"){
+				$('#choice-block').empty();
+				for(var i=0;i<choices.length; i++){
+				$(document.createElement('li')).addClass('choice choice-box btn').attr('data-index', i).text(choices[i]).appendTo('#choice-block');
+				}
+			}
+		}
+        
+        /**
+         * Resets all of the fields to prepare for next question
+         */
+		function nextQuestion(){
+			submt = true;
+			$('#explanation').empty();
+			$('#question').text(quiz[currentquestion]['question']);
+			$('#pager').text('Questão ' + Number(currentquestion + 1) + ' de ' + quiz.length);
+			if(quiz[currentquestion].hasOwnProperty('image') && quiz[currentquestion]['image'] != ""){
+				if($('#question-image').length == 0){
+					$(document.createElement('img')).addClass('question-image').attr('id', 'question-image').attr('src', quiz[currentquestion]['image']).attr('alt', htmlEncode(quiz[currentquestion]['question'])).insertAfter('#question');
+				} else {
+					$('#question-image').attr('src', quiz[currentquestion]['image']).attr('alt', htmlEncode(quiz[currentquestion]['question']));
+				}
+			} else {
+				$('#question-image').remove();
+			}
+			addChoices(quiz[currentquestion]['choices']);
+			setupButtons();
+			
+			jQuery(document).ready(function($){
+				$("#question").html(function(){
+					var text= $(this).text().trim().split(" ");
+					var first = text.shift();
+					return (text.length > 0 ? "<span class='number'>"+ first +"</span> " : first) + text.join(" ");
+				});
+				
+				$('p.pager').each(function(){
+					var text = $(this).text().split(' ');
+					if(text.length < 2)
+						return;
+					
+					text[1] = '<span class="qnumber">'+text[1]+'</span>';
+					$(this).html(
+						text.join(' ')
+					);
+				});
+				
+			});
+			
+        }
+
+        /**
+         * After a selection is submitted, checks if its the right answer
+         *
+         * @param {choice} number The li zero-based index of the choice picked
+         */
+        function processQuestion(choice){
+            if(quiz[currentquestion]['choices'][choice] == quiz[currentquestion]['correct']){
+				$('.choice').eq(choice).addClass('btn-success').css({'font-weight':'bold', 'border-color':'#51a351', 'color':'#fff'});
+				$('#explanation').html('<span class="correct">ACERTO MISERAVI!</span> ' + htmlEncode(quiz[currentquestion]['explanation']));
+				score++;
+			} else {
+                $('.choice').eq(choice).addClass('btn-danger').css({'font-weight':'bold', 'border-color':'#f93939', 'color':'#fff'});
+                $('#explanation').html('<span class="incorrect">ERRRRRRRRRRRRRROU!</span> ' + htmlEncode(quiz[currentquestion]['explanation']));
+            }
+            currentquestion++;
+
+			if(currentquestion == quiz.length){
+				$('#submitbutton').html('Vamo ver quanto q cê tirou!').removeClass('btn-success').addClass('btn-info').css({'border-color':'#3a87ad', 'color':'#fff'}).on('click', function(){
+					$(this).text('Vamo ver quanto q cê tirou!').on('click');
+					endQuiz();
+				})
+				
+			} else if (currentquestion < quiz.length){
+				$('#submitbutton').html('Manda outra &raquo;').removeClass('btn-success').addClass('btn-warning').css({'font-weight':'bold', 'border-color':'#faa732', 'color':'#fff'}).on('click', function(){
+					$(this).text('É isso mesmo?').removeClass('btn-warning').addClass('btn-success').css({'font-weight':'bold', 'border-color':'#51a351', 'color':'#fff'}).on('click');
+					nextQuestion();
+				})
+			} else {
+				//	$('#submitbutton').html('NEXT QUESTION &raquo;').on('click', function(){
+				//		$(this).text('- CHECK ANSWER -').css({'color':'inherit'}).on('click');
+				//	})
+			}
+
+			
+		}
+
+        /**
+         * Sets up the event listeners for each button.
+         */
+		function setupButtons(){
+			$('.choice').on('click', function(){
+				picked = $(this).attr('data-index');
+				$('.choice').removeAttr('style').off('mouseout mouseover');
+				$(this).css({'font-weight':'bold', 'border-color':'#51a351', 'color':'#51a351'});
+				if(submt){
+					submt=false;
+					$('#submitbutton').css({'color':'#fff','cursor':'pointer'}).on('click', function(){
+						$('.choice').off('click');
+						$(this).off('click');
+						processQuestion(picked);
+					});
+				}
+			})
+		}
+        
+
+       
+        /**
+         * Quiz ends, display a message.
+         */
+		function endQuiz(){
+			var endQuestions = "Acabou!";
+			document.getElementById("pager").innerHTML = endQuestions;
+			$('#explanation').empty();
+			$('#question').empty();
+			$('#choice-block').empty();
+			$('#submitbutton').remove();
+			$('.rsform-block-submit').addClass('show');
+			$('#question').text("Você acertou " + score + " de " + quiz.length + " perguntas.");
+            calcTips(this.score);
+			$(document.createElement('h4')).addClass('score').text(Math.round(score/quiz.length * 100) + '%').insertAfter('#question');			
+		}
+
+         function calcTips(score){
+            if(Math.round(this.score/quiz.length * 100 <= 30)){
+                $('#question').text("Mandou mal, hein! Só desbloqueou uma dica! \n Dica 1: Dica 1: Ambos gostaríamos que fosse maior.");
+            }else if(Math.round(this.score/quiz.length * 100 <= 50 && this.score/quiz.length * 100 >= 30)){
+                $('#question').text(" Desapontada porém não surpresa. Você desbloqueou duas dicas! Dica 1: Ambos gostaríamos que fosse maior. Dica 2: Espero que você consiga alcançar.");
+            }else if (Math.round(this.score/quiz.length * 100 > 50)) {
+                $('#question').text("Ok, você é o nerdão mais nerdão de LOTR! Desapontada porém não surpresa. Você desbloqueou duas dicas! Dica 1: Ambos gostaríamos que fosse maior. Dica 2: Espero que você consiga alcançar. Dica 3: Perto de um objeto que você gostaria de poder utilizar mais na sua nova casa.");            
+            }
+
+        }
+
+        /**
+         * Runs the first time and creates all of the elements for the quiz
+         */
+		function init(){
+			//add title
+			if(typeof quiztitle !== "undefined" && $.type(quiztitle) === "string"){
+				$(document.createElement('h2')).text(quiztitle).appendTo('#frame');
+			} else {
+				$(document.createElement('h2')).text("Quiz").appendTo('#frame');
+			}
+			
+			//add pager and questions
+			if(typeof quiz !== "undefined" && $.type(quiz) === "array"){
+				//add pager
+				$(document.createElement('p')).addClass('pager').attr('id','pager').text('Questão 1 de ' + quiz.length).appendTo('#frame');
+				//add first question
+				$(document.createElement('h3')).addClass('question').attr('id', 'question').text(quiz[0]['question']).appendTo('#frame');
+				//add image if present
+				if(quiz[0].hasOwnProperty('image') && quiz[0]['image'] != ""){
+					$(document.createElement('img')).addClass('question-image').attr('id', 'question-image').attr('src', quiz[0]['image']).attr('alt', htmlEncode(quiz[0]['question'])).appendTo('#frame');
+				}
+				
+				$(document.createElement('p')).addClass('explanation').attr('id','explanation').html('').appendTo('#frame');
+				
+				//questions holder
+				$(document.createElement('ul')).attr('id', 'choice-block').appendTo('#frame');
+				
+				//add choices
+				addChoices(quiz[0]['choices']);
+				
+				//add submit button
+				$(document.createElement('div')).addClass('btn-success choice-box').attr('id', 'submitbutton').text('É isso mesmo?').css({'font-weight':'bold', 'color':'#fff','padding':'30px 0', 'border-radius':'10px'}).appendTo('#frame');
+				
+				setupButtons();
+			}
+		}
+	
+		init();
+	
+	});
+		
+	jQuery(document).ready(function($){			
+		$("#question").html(function(){
+		var text= $(this).text().trim().split(" ");
+		var first = text.shift();
+			return (text.length > 0 ? "<span class='number'>"+ first +"</span> " : first) + text.join(" ");
+		});
+		
+		$('p.pager').each(function(){
+			var text = $(this).text().split(' ');
+			if(text.length < 2)
+				return;
+			
+			text[1] = '<span class="qnumber">'+text[1]+'</span>';
+			$(this).html(
+				text.join(' ')
+			);
+		});
+
+	});	
+
+		function copyText() {
+			var output = document.getElementById("frame").innerHTML;
+			document.getElementById("placecontent").value = output;
+		}
+	    
+    </script>
+    <style type="text/css" media="all">
+		input 													{ height:30px !important; }
+		input[type=checkbox]									{ height:30px !important; margin-top:-3px !important; margin-right:5px !important; box-shadow:none; background-color:#ffffff; position:relative !important; }
+		textarea												{ width: 90%; margin: 0 auto; display: block; }
+		input[type=radio]										{ height:30px !important; margin-top:-3px !important; margin-right:5px !important; box-shadow:none; background-color:#ffffff; position:relative !important; }
+		.form-group input, .form-group select 					{ height:30px; padding: 0px 12px; }
+		.form-horizontal .form-group							{ margin:10px; }
+		.formContainer .formControlLabel 						{ width:auto !important; min-width:150px; margin:0; padding:0; }
+		.formControls											{ width:100%; padding:0; margin: 10px 0 20px auto; }
+		.radio 													{ padding-top:0 !important; padding-left:8px !important; }
+		.radio-inline											{ margin-right:10px; padding-top:0 !important; display:inline; }
+		.bold													{ font-weight:bold; }
+		.italic 												{ font-style:italic; }
+		.clear					 								{ width:100%; margin:0 !important; }
+		.rsform-block-submit 									{ display:none; }
+		.show 													{ display: block !important; }
+/*		.rsform-block-placecontent 								{ display:none; } */
+		#submit													{ margin:0 auto; display:block; }
+
+		/* QUIZ STYLES */
+		ol,ul 													{ list-style:none; }
+		strong 													{ font-weight:700; }
+		#frame 													{ width:auto; max-width: 800px; background:transparent; margin:3px auto; padding:10px; color: white !important; }
+		div#frame h2 											{ width:auto; border-bottom:1px solid #bdbdbd; padding:0 0 5px 0; font-size:30px; }
+		h3.question 											{ font-weight:normal; margin:20px 0; padding:0; font-style:italic; display:block; }
+		p.pager 												{ margin:5px 0 5px; color:#999; text-align:right; }
+		.qnumber 												{ font-size:25px; font-weight:bold; font-style:italic; vertical-align:bottom; }
+		.number 												{ font-size:25px; font-weight:bold; font-style:normal; vertical-align:inherit; padding-right:10px; }
+		.score 													{ width:100%; display:inline-block; margin:30px 0; font-size:100px; text-align:center; }
+		img.question-image 										{ width:100%; height:auto; display:block; max-width:410px; margin:10px auto; border:1px solid #ccc; }
+		#choice-block 											{ display:block; list-style:none; margin:0; padding:0; cursor: pointer; }
+	/*	#submitbutton 											{ cursor:pointer; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; } */
+	/*	#submitbutton:hover 									{ background:#7b8da6; } */
+		#explanation 											{ width:auto; min-height:100px; margin:0 auto; padding:20px 0; text-align:center; }
+		#explanation span 										{ font-weight:bold; padding-right:8px; }
+		.choice-box 											{ width:100%;  display:block;  text-align:center;  margin:5px auto !important; padding:10px 0 !important; border:1px solid #bdbdbd; }
+		.correct 												{ color:#51a351; font-size: 20px; display: block; margin-bottom: 5px; border-bottom: 1px #51a351 solid; padding-bottom: 5px; }
+		.incorrect 												{ color:#f93939; font-size: 20px; display: block; margin-bottom: 5px; border-bottom: 1px #f93939 solid; padding-bottom: 5px; }
+
+        .bg_video{
+     
+}
+    </style>
+</head>
+<body style="background-image: url(img/bg.jpg);">
+
+
+
+
+
+<div class="form-group rsform-block rsform-block-framecontent">
+    <div id="frame" role="content"></div>
+</div>
+<hr>
+<div class="form-group rsform-block rsform-block-placecontent">
+	<label class="col-sm-3 control-label formControlLabel" data-toggle="tooltip" title="" for="placecontent"></label>
+	<div class="col-sm-6 formControls" style="visibility:hidden;">
+		<textarea cols="50" rows="5" name="form[placecontent]" id="placecontent" readonly="" class="rsform-text-box form-control rsform-text-box"></textarea>			
+	</div>
+</div>	
+	
+
+				
+</body>
+
+</html>
